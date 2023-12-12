@@ -26,6 +26,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+      - name: Checkout git submodules
+        run: git submodule update --init --recursive
       - name: Install CMake (Linux)
         if: runner.os == 'Linux'
         run: sudo apt-get install -y cmake
