@@ -1,0 +1,37 @@
+name: Native
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+env:
+  BUILD_DIRECTORY: build
+  BUILD_TYPE: Release
+
+jobs:
+  native:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    defaults:
+      run:
+        working-directory: ./native
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Install CMake
+        run: |
+          if [[ "$RUNNER_OS" == "Windows" ]]; then
+            choco install cmake
+          else
+            sudo apt-get install -y cmake
+          fi
+      - name: Build
+        run: cmake -S . --build ${{env.BUILD_DIRECTORY}} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      - name: List contents of build directory
+        run: find ${{env.BUILD_DIRECTORY}}
