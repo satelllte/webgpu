@@ -1,4 +1,7 @@
-cmake_minimum_required(VERSION 3.27)
+# Version 3.24.1:
+# - is bundled in Visual Studio 2022 v17.4
+# - is also bundled in CLion as of 2023
+cmake_minimum_required(VERSION 3.24.1)
 
 # Reads VERSION file and puts its value into CURRENT_VERSION variable.
 # Be sure the file has no newlines!
