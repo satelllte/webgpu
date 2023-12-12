@@ -11,9 +11,11 @@ on:
 env:
   BUILD_DIRECTORY: build
   BUILD_TYPE: Release
+  EXECUTABLE_NAME: App
 
 jobs:
   native:
+    timeout-minutes: 5
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -30,11 +32,11 @@ jobs:
       - name: Install CMake (Windows)
         if: runner.os == 'Windows'
         run: choco install cmake
-      - name: CMake - Generate build files
+      - name: Generate CMake build files
         run: cmake -S . -B ${{env.BUILD_DIRECTORY}} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-      - name: List contents of build directory
-        run: find ${{env.BUILD_DIRECTORY}}
-      - name: CMake - Build executable
+      - name: Build executable
         run: cmake --build ${{env.BUILD_DIRECTORY}}
-      - name: List contents of build directory
-        run: find ${{env.BUILD_DIRECTORY}}
+      - name: Run (non-Windows)
+        run: ./build/${{env.EXECUTABLE_NAME}}
+      - name: Run (Windows)
+        run: build\${{env.BUILD_TYPE}}\${{env.EXECUTABLE_NAME}}.exe
