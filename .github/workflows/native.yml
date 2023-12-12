@@ -58,11 +58,11 @@ jobs:
         if: runner.os != 'Windows'
         uses: actions/upload-artifact@v3
         with:
-          name: webgpu-${{matrix.os}}
+          name: webgpu-${{runner.os}}
           path: ${{env.BUILD_DIRECTORY}}/${{env.EXECUTABLE_NAME}}
       - name: Upload executable artifact (Windows)
         if: runner.os == 'Windows'
         uses: actions/upload-artifact@v3
         with:
-          name: webgpu-${{matrix.os}}
+          name: webgpu-${{runner.os}}
           path: ${{env.BUILD_DIRECTORY}}/Release/${{env.EXECUTABLE_NAME}}.exe
