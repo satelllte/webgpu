@@ -17,8 +17,14 @@ project(
 
 include(utils.cmake)
 
+# Include "glfw" third-party directory
+add_subdirectory(./third-party/glfw)
+
 # Create the App executable target with one source file
 add_executable(App ./src/main.cpp)
+
+# Include "glfw" dependency
+target_link_libraries(App PRIVATE glfw)
 
 # Use C++17
 set_target_properties(App PROPERTIES CXX_STANDARD 17)
