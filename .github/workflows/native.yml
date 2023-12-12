@@ -31,7 +31,11 @@ jobs:
           else
             sudo apt-get install -y cmake
           fi
-      - name: Build
-        run: cmake -S . --build ${{env.BUILD_DIRECTORY}} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      - name: CMake - Generate build files
+        run: cmake -S . -B ${{env.BUILD_DIRECTORY}} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      - name: List contents of build directory
+        run: find ${{env.BUILD_DIRECTORY}}
+      - name: CMake - Build executable
+        run: cmake --build ${{env.BUILD_DIRECTORY}}
       - name: List contents of build directory
         run: find ${{env.BUILD_DIRECTORY}}
