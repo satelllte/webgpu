@@ -41,4 +41,6 @@ jobs:
         run: ./build/${{env.EXECUTABLE_NAME}}
       - name: Run (Windows)
         if: runner.os == 'Windows'
-        run: build\${{env.BUILD_TYPE}}\${{env.EXECUTABLE_NAME}}.exe
+        run: |
+          Import-Module build
+          build\${{env.BUILD_TYPE}}\${{env.EXECUTABLE_NAME}}.exe
