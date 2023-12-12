@@ -9,6 +9,7 @@ on:
       - main
 
 env:
+  WORKING_DIRECTORY: native
   BUILD_DIRECTORY: build
   BUILD_TYPE: Release
   EXECUTABLE_NAME: App
@@ -22,10 +23,14 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
     defaults:
       run:
-        working-directory: ./native
+        working-directory: ${{env.WORKING_DIRECTORY}}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+      - name: Checkout git submodules
+        run: git submodule update --init --recursive
+
+      # Install CMake
       - name: Install CMake (Linux)
         if: runner.os == 'Linux'
         run: sudo apt-get install -y cmake
@@ -37,13 +42,28 @@ jobs:
         run: choco install cmake
       - name: CMake Version
         run: cmake --version
-      - name: Generate CMake build files
+
+      # Install dependencies
+      - name: Install dependencies (Linux)
+        if: runner.os == 'Linux'
+        run: sudo apt-get install -y xorg-dev
+
+      # Build
+      - name: Configure CMake
         run: cmake -S . -B ${{env.BUILD_DIRECTORY}} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-      - name: Build executable
+      - name: Build
         run: cmake --build ${{env.BUILD_DIRECTORY}} --config ${{env.BUILD_TYPE}}
-      - name: Run (non-Windows)
+
+      # Upload executable artifacts
+      - name: Upload executable artifact (non-Windows)
         if: runner.os != 'Windows'
-        run: ./build/${{env.EXECUTABLE_NAME}}
-      - name: Run (Windows)
+        uses: actions/upload-artifact@v3
+        with:
+          name: webgpu-${{runner.os}}
+          path: ${{env.WORKING_DIRECTORY}}/${{env.BUILD_DIRECTORY}}/${{env.EXECUTABLE_NAME}}
+      - name: Upload executable artifact (Windows)
         if: runner.os == 'Windows'
-        run: .\build\${{env.BUILD_TYPE}}\${{env.EXECUTABLE_NAME}}.exe
+        uses: actions/upload-artifact@v3
+        with:
+          name: webgpu-${{runner.os}}
+          path: ${{env.WORKING_DIRECTORY}}/${{env.BUILD_DIRECTORY}}/Release/${{env.EXECUTABLE_NAME}}.exe

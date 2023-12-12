@@ -1,0 +1,3 @@
+[submodule "native/third-party/glfw"]
+	path = native/third-party/glfw
+	url = https://github.com/glfw/glfw.git
