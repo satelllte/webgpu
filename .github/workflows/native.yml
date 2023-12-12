@@ -26,9 +26,12 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Install CMake (non-Windows)
-        if: runner.os != 'Windows'
+      - name: Install CMake (Linux)
+        if: runner.os == 'Linux'
         run: sudo apt-get install -y cmake
+      - name: Install CMake (MacOS)
+        if: runner.os == 'MacOs'
+        run: brew install cmake
       - name: Install CMake (Windows)
         if: runner.os == 'Windows'
         run: choco install cmake
