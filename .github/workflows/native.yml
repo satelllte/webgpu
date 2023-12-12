@@ -9,6 +9,7 @@ on:
       - main
 
 env:
+  WORKING_DIRECTORY: native
   BUILD_DIRECTORY: build
   BUILD_TYPE: Release
   EXECUTABLE_NAME: App
@@ -22,7 +23,7 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
     defaults:
       run:
-        working-directory: ./native
+        working-directory: ${{env.WORKING_DIRECTORY}}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -59,10 +60,10 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: webgpu-${{runner.os}}
-          path: ${{env.BUILD_DIRECTORY}}/${{env.EXECUTABLE_NAME}}
+          path: ${{env.WORKING_DIRECTORY}}/${{env.BUILD_DIRECTORY}}/${{env.EXECUTABLE_NAME}}
       - name: Upload executable artifact (Windows)
         if: runner.os == 'Windows'
         uses: actions/upload-artifact@v3
         with:
           name: webgpu-${{runner.os}}
-          path: ${{env.BUILD_DIRECTORY}}/Release/${{env.EXECUTABLE_NAME}}.exe
+          path: ${{env.WORKING_DIRECTORY}}/${{env.BUILD_DIRECTORY}}/Release/${{env.EXECUTABLE_NAME}}.exe
