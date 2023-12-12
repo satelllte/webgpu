@@ -32,6 +32,8 @@ jobs:
       - name: Install CMake (Windows)
         if: runner.os == 'Windows'
         run: choco install cmake
+      - name: CMake Version
+        run: cmake --version
       - name: Generate CMake build files
         run: cmake -S . -B ${{env.BUILD_DIRECTORY}} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
       - name: Build executable
