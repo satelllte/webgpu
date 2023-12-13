@@ -1,3 +1,6 @@
 [submodule "native/third-party/glfw"]
 	path = native/third-party/glfw
 	url = https://github.com/glfw/glfw.git
+[submodule "native/third-party/dawn"]
+	path = native/third-party/dawn
+	url = https://github.com/google/dawn.git
