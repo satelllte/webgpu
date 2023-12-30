@@ -29,6 +29,14 @@ target_link_libraries(App PRIVATE glfw)
 # Use C++17
 set_target_properties(App PROPERTIES CXX_STANDARD 17)
 
+# Xcode settings
+if(XCODE)
+	set_target_properties(App PROPERTIES
+		XCODE_GENERATE_SCHEME ON
+		XCODE_SCHEME_ENABLE_GPU_FRAME_CAPTURE_MODE "Metal"
+	)
+endif()
+
 # Turn all warnings on and treat them as errors so that are not
 # tempted to ignore them (See utils.cmake for details).
 target_treat_all_warnings_as_errors(App)
