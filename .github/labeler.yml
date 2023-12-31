@@ -1,0 +1,12 @@
+root:
+  - changed-files:
+    - any-glob-to-any-file: '*'
+github:
+  - changed-files:
+    - any-glob-to-any-file: '.github/**'
+native:
+  - changed-files:
+    - any-glob-to-any-file: 'native/**'
+web:
+  - changed-files:
+    - any-glob-to-any-file: 'web/**'
