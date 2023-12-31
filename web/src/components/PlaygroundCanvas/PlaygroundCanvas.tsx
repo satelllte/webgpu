@@ -39,15 +39,7 @@ export function PlaygroundCanvas() {
         return;
       }
 
-      const adapterInfo = await adapter.requestAdapterInfo();
-      const adapterFeatures = getAdapterFeatures(adapter);
-
-      gpuDebugLog('adapter: ', adapter);
-      gpuDebugLog('adapter info: ', adapterInfo);
-      gpuDebugLog('adapter features: ', adapterFeatures);
-
       const device = await adapter.requestDevice();
-      gpuDebugLog('device: ', device);
 
       const gpuPreferredCanvasFormat = gpu.getPreferredCanvasFormat();
 
@@ -122,11 +114,8 @@ export function PlaygroundCanvas() {
           ] as const satisfies Iterable<GPUColorTargetState>,
         },
       });
-      gpuDebugLog('renderPipeline: ', renderPipeline);
 
       const commandEncoder = device.createCommandEncoder();
-      gpuDebugLog('commandEncoder: ', commandEncoder);
-
       const passEncoder = commandEncoder.beginRenderPass({
         colorAttachments: [
           {
@@ -137,7 +126,6 @@ export function PlaygroundCanvas() {
           },
         ] as const satisfies Iterable<GPURenderPassColorAttachment>,
       });
-      gpuDebugLog('passEncoder: ', passEncoder);
 
       passEncoder.setPipeline(renderPipeline);
       passEncoder.setVertexBuffer(0, verticesBuffer);
@@ -155,16 +143,4 @@ export function PlaygroundCanvas() {
 
 const showAlert = (message: string): void => {
   alert(message); // eslint-disable-line no-alert
-};
-
-const gpuDebugLog = (message: string, ...args: unknown[]): void => {
-  console.debug(`[WebGPU] ${message}`, ...args);
-};
-
-const getAdapterFeatures = (adapter: GPUAdapter): string[] => {
-  const features: string[] = [];
-  adapter.features.forEach((feature) => {
-    features.push(feature);
-  });
-  return features;
 };
