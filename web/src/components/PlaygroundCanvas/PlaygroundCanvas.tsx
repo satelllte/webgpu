@@ -17,10 +17,39 @@ export function PlaygroundCanvas() {
   }, [width, height]);
 
   useEffect(() => {
-    if (!navigator.gpu) {
-      alert('WebGPU is not supported in this browser'); // eslint-disable-line no-alert
-    }
+    const run = async () => {
+      if (!navigator.gpu) {
+        showAlert('WebGPU is not supported in this browser');
+        return;
+      }
+
+      const adapter = await navigator.gpu.requestAdapter();
+      if (!adapter) {
+        showAlert('Failed to request WebGPU adapter');
+        return;
+      }
+
+      console.debug('[WebGPU] adapter: ', adapter);
+      console.debug('[WebGPU] adapter features: ', getAdapterFeatures(adapter));
+
+      const device = await adapter.requestDevice();
+      console.debug('[WebGPU] device: ', device);
+    };
+
+    void run();
   }, []);
 
   return <canvas ref={canvasRef} className='absolute h-full w-full' />;
 }
+
+const showAlert = (message: string) => {
+  alert(message); // eslint-disable-line no-alert
+};
+
+const getAdapterFeatures = (adapter: GPUAdapter): string[] => {
+  const features: string[] = [];
+  adapter.features.forEach((feature) => {
+    features.push(feature);
+  });
+  return features;
+};
