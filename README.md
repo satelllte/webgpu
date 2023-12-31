@@ -7,4 +7,4 @@ Mostly follows [LearnWebGPU](https://eliemichel.github.io/LearnWebGPU/getting-st
 ## Project structure
 
 - [native/](./native/) - Native platforms playground (via C++).
-- ~`web/`~ **[TO BE DONE]**
+- [web/](./web/) - Web platform playground (via TypeScript).
