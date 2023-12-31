@@ -84,14 +84,9 @@ export function PlaygroundCanvas() {
 
       // prettier-ignore
       const vertices = new Float32Array([
-         0.0,  0.6,  0.0, // X
-         1.0,  1.0,  0.0, // Y
-         0.0,  1.0, -0.5, // Z
-        -0.6,  0.0,  1.0, // W
-         0.0,  1.0,  0.0, // R
-         1.0,  0.5, -0.6, // G
-         0.0,  1.0,  0.0, // B
-         0.0,  1.0,  1.0, // A
+         0.0,  0.6,  0.0,  1.0,  1.0,  0.0,  0.0,  1.0, // Point 0: XYZW + RGBA
+        -0.5, -0.6,  0.0,  1.0,  0.0,  1.0,  0.0,  1.0, // Point 1: XYZW + RGBA
+         0.5, -0.6,  0.0,  1.0,  0.0,  0.0,  1.0,  1.0, // Point 2: XYZW + RGBA
       ]);
 
       const verticesBuffer = device.createBuffer({
