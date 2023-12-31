@@ -10,6 +10,7 @@ on:
 
 env:
   WORKING_DIRECTORY: web
+  BUILD_DIRECTORY: out
 
 jobs:
   web:
@@ -31,3 +32,10 @@ jobs:
         run: bun run test:lint
       - name: Test (format)
         run: bun run test:format
+      - name: Build
+        run: bun run build
+      - name: Upload static output artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: web
+          path: ${{env.WORKING_DIRECTORY}}/${{env.BUILD_DIRECTORY}}
