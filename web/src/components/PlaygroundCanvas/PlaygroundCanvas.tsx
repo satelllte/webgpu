@@ -1,6 +1,7 @@
 'use client';
 import {useEffect, useRef} from 'react';
 import {useWindowSize} from 'usehooks-ts';
+import shaderWgsl from './shader.wgsl';
 
 export function PlaygroundCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -49,29 +50,6 @@ export function PlaygroundCanvas() {
         alphaMode: 'premultiplied',
       });
 
-      // eslint-disable-next-line no-warning-comments
-      // TODO: Configure .wgsl shader files loader
-      const shaderWgsl = `
-        struct VertexOut {
-          @builtin(position) position : vec4f,
-          @location(0) color : vec4f
-        }
-
-        @vertex
-        fn vertex_main(@location(0) position: vec4f, @location(1) color: vec4f) -> VertexOut
-        {
-          var output : VertexOut;
-          output.position = position;
-          output.color = color;
-          return output;
-        }
-
-        @fragment
-        fn fragment_main(fragData: VertexOut) -> @location(0) vec4f
-        {
-          return fragData.color;
-        }
-      `;
       const shaderModule = device.createShaderModule({code: shaderWgsl});
 
       // prettier-ignore
