@@ -1,9 +1,5 @@
 import type {Metadata} from 'next';
-import {Inter} from 'next/font/google';
 import './globals.css';
-
-// eslint-disable-next-line new-cap
-const inter = Inter({subsets: ['latin']});
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -17,9 +13,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang='en'>
-      <body className={`${inter.className} bg-black text-white`}>
-        {children}
-      </body>
+      <head>
+        <link rel='preconnect' href='https://rsms.me/' />
+        <link rel='stylesheet' href='https://rsms.me/inter/inter.css' />
+      </head>
+      <body className='bg-black text-white'>{children}</body>
     </html>
   );
 }
