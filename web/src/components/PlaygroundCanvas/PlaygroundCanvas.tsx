@@ -16,5 +16,11 @@ export function PlaygroundCanvas() {
     canvas.height = Math.floor(height * pixelRatio);
   }, [width, height]);
 
+  useEffect(() => {
+    if (!navigator.gpu) {
+      alert('WebGPU is not supported in this browser'); // eslint-disable-line no-alert
+    }
+  }, []);
+
   return <canvas ref={canvasRef} className='absolute h-full w-full' />;
 }
