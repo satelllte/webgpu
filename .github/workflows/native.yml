@@ -27,8 +27,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Checkout git submodules
-        run: git submodule update --init --recursive
 
       # Install CMake
       - name: Install CMake (Linux)
