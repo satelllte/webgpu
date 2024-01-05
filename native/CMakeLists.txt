@@ -19,10 +19,11 @@ project(
 include(./cmake/CPM.cmake)
 include(./cmake/utils.cmake)
 
-# Include "glfw" third-party directory
-add_subdirectory(./third-party/glfw)
+# Include third-party dependencies
+set(CPM_SOURCE_CACHE "./cpm-cache")
+CPMAddPackage("gh:glfw/glfw#3.3.9")
 
-# Create the App executable target with one source file
+# Create the executable target
 add_executable(App ./src/main.cpp)
 
 # Include "glfw" dependency
