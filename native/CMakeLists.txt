@@ -15,7 +15,7 @@ project(
 	LANGUAGES CXX C
 )
 
-include(utils.cmake)
+include(./cmake/utils.cmake)
 
 # Include "glfw" third-party directory
 add_subdirectory(./third-party/glfw)
