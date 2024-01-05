@@ -27,6 +27,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+      
+      - name: Python version
+        run: python --version
 
       # Install CMake
       - name: Install CMake (Linux)
