@@ -1,4 +1,4 @@
-name: Native
+name: CI
 
 on:
   push:
@@ -8,14 +8,32 @@ on:
     branches:
       - main
 
-env:
-  WORKING_DIRECTORY: native
-  BUILD_DIRECTORY: build
-  BUILD_TYPE: Release
-  EXECUTABLE_NAME: App
-
 jobs:
+  changes:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+    outputs:
+      native: ${{ steps.filter.outputs.native }}
+      web: ${{ steps.filter.outputs.web }}
+    steps:
+    - uses: dorny/paths-filter@v2
+      id: filter
+      with:
+        filters: |
+          native:
+            - './native/**'
+          web:
+            - './web/**'
+
   native:
+    needs: changes
+    if: ${{ needs.changes.outputs.native == 'true' }}
+    env:
+      WORKING_DIRECTORY: native
+      BUILD_DIRECTORY: build
+      BUILD_TYPE: Release
+      EXECUTABLE_NAME: App
     timeout-minutes: 5
     runs-on: ${{ matrix.os }}
     strategy:
@@ -67,3 +85,35 @@ jobs:
         with:
           name: webgpu-${{runner.os}}
           path: ${{env.WORKING_DIRECTORY}}/${{env.BUILD_DIRECTORY}}/Release/${{env.EXECUTABLE_NAME}}.exe
+
+  web:
+    needs: changes
+    if: ${{ needs.changes.outputs.web == 'true' }}
+    env:
+      WORKING_DIRECTORY: web
+      BUILD_DIRECTORY: out
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{env.WORKING_DIRECTORY}}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v1
+      - name: Bun version
+        run: bun --version
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+      - name: Test (lint)
+        run: bun run test:lint
+      - name: Test (format)
+        run: bun run test:format
+      - name: Build
+        run: bun run build
+      - name: Upload static output artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: web
+          path: ${{env.WORKING_DIRECTORY}}/${{env.BUILD_DIRECTORY}}
