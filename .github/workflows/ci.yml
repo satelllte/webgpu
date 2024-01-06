@@ -17,14 +17,17 @@ jobs:
       native: ${{ steps.filter.outputs.native }}
       web: ${{ steps.filter.outputs.web }}
     steps:
-    - uses: dorny/paths-filter@v2
-      id: filter
-      with:
-        filters: |
-          native:
-            - './native/**'
-          web:
-            - './web/**'
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Detect changes by filters
+        uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            native:
+              - './native/**'
+            web:
+              - './web/**'
 
   native:
     needs: changes
