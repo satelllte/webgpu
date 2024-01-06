@@ -7,7 +7,7 @@ int main (int, char**) {
 		return 1;
 	}
 
-	GLFWwindow* window = glfwCreateWindow(640, 480, "WebGPU", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(640, 480, "WebGPU playground", NULL, NULL);
 	if (!window) {
 		std::cerr << "Could not open window!" << std::endl;
 		glfwTerminate();
