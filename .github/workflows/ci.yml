@@ -78,13 +78,13 @@ jobs:
       # Upload executable artifacts
       - name: Upload executable artifact (non-Windows)
         if: runner.os != 'Windows'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: webgpu-${{runner.os}}
           path: ${{env.WORKING_DIRECTORY}}/${{env.BUILD_DIRECTORY}}/${{env.EXECUTABLE_NAME}}
       - name: Upload executable artifact (Windows)
         if: runner.os == 'Windows'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: webgpu-${{runner.os}}
           path: ${{env.WORKING_DIRECTORY}}/${{env.BUILD_DIRECTORY}}/Release/${{env.EXECUTABLE_NAME}}.exe
@@ -116,7 +116,7 @@ jobs:
       - name: Build
         run: bun run build
       - name: Upload static output artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: web
           path: ${{env.WORKING_DIRECTORY}}/${{env.BUILD_DIRECTORY}}
