@@ -47,7 +47,12 @@ jobs:
       # Install dependencies
       - name: Install dependencies (Linux)
         if: runner.os == 'Linux'
-        run: sudo apt-get install -y xorg-dev libx11-dev
+        run: |
+          sudo apt update
+          # GLFW
+          sudo apt-get install -y xorg-dev
+          # GLFW for Dawn: https://crbug.com/dawn/1358
+          sudo apt-get install -y libgl-dev libx11-dev libx11-xcb-dev libxcursor-dev libxext-dev libxi-dev libxinerama-dev libxrandr-dev
 
       # Build
       - name: Configure CMake
