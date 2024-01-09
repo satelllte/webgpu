@@ -72,9 +72,9 @@ jobs:
         run: |
           sudo apt update
           # GLFW: https://www.glfw.org/docs/3.3/compile.html#compile_deps_x11
-          sudo apt-get install -y xorg-dev
-          # GLFW for Dawn: https://crbug.com/dawn/1358
-          sudo apt-get install -y libgl-dev libx11-dev libx11-xcb-dev libxcursor-dev libxext-dev libxi-dev libxinerama-dev libxrandr-dev
+          sudo apt install xorg-dev
+          # DAWN: https://github.com/google/dawn/blob/main/.github/workflows/ci.yml
+          sudo apt install libgl-dev libx11-xcb-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libxext-dev wayland-protocols libwayland-dev libxkbcommon-dev
 
       # Build
       - name: Configure CMake
