@@ -93,10 +93,7 @@ jobs:
       # Build
       - name: Configure CMake
         run: >
-          cmake
-            -S .
-            -G Ninja
-            -B ${{env.BUILD_DIRECTORY}}
+          cmake -S . -G Ninja -B ${{env.BUILD_DIRECTORY}}
             -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
             -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
             -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
