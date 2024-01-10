@@ -37,7 +37,7 @@ jobs:
       BUILD_DIRECTORY: build
       BUILD_TYPE: Release
       EXECUTABLE_NAME: App
-    timeout-minutes: 60
+    timeout-minutes: 90
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false # Ensure the feedback is delivered for all matrix combinations. Consider changing this to true when the workflow is stable.
