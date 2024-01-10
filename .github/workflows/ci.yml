@@ -65,6 +65,10 @@ jobs:
         run: choco install cmake
       - name: CMake Version
         run: cmake --version
+      
+      # Install Ninja
+      - name: Install Ninja
+        uses: seanmiddleditch/gha-setup-ninja@master
 
       # Install dependencies
       - name: Install dependencies (Linux)
@@ -78,7 +82,7 @@ jobs:
 
       # Build
       - name: Configure CMake
-        run: cmake -S . -B ${{env.BUILD_DIRECTORY}} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+        run: cmake -S . -G Ninja -B ${{env.BUILD_DIRECTORY}} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
       - name: Build
         run: cmake --build ${{env.BUILD_DIRECTORY}} --config ${{env.BUILD_TYPE}}
 
