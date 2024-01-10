@@ -43,6 +43,16 @@ jobs:
       fail-fast: false # Ensure the feedback is delivered for all matrix combinations. Consider changing this to true when the workflow is stable.
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
+        include:
+          - os: ubuntu-latest
+            c_compiler: clang
+            cpp_compiler: clang++
+          - os: macos-latest
+            c_compiler: clang
+            cpp_compiler: clang++
+          - os: windows-latest
+            c_compiler: cl
+            cpp_compiler: cl
     defaults:
       run:
         working-directory: ${{env.WORKING_DIRECTORY}}
@@ -82,7 +92,14 @@ jobs:
 
       # Build
       - name: Configure CMake
-        run: cmake -S . -G Ninja -B ${{env.BUILD_DIRECTORY}} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+        run: |
+          cmake \
+            -S . \
+            -G Ninja \
+            -B ${{env.BUILD_DIRECTORY}} \
+            -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} \
+            -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} \
+            -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
       - name: Build
         run: cmake --build ${{env.BUILD_DIRECTORY}} --config ${{env.BUILD_TYPE}}
 
