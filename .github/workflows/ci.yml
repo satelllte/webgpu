@@ -62,6 +62,12 @@ jobs:
       
       - name: Python version
         run: python --version
+      
+      - name: Clang version
+        run: clang --version
+      
+      - name: Clang++ version
+        run: clang++ --version
 
       # Install CMake
       - name: Install CMake (Linux)
