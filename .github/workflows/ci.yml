@@ -51,8 +51,8 @@ jobs:
             c_compiler: clang
             cpp_compiler: clang++
           - os: windows-latest
-            c_compiler: cl
-            cpp_compiler: cl
+            c_compiler: cl.exe
+            cpp_compiler: cl.exe
     defaults:
       run:
         working-directory: ${{env.WORKING_DIRECTORY}}
