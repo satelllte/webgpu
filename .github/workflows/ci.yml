@@ -50,9 +50,10 @@ jobs:
           - os: macos-latest
             c_compiler: clang
             cpp_compiler: clang++
-          - os: windows-latest
-            c_compiler: cl.exe
-            cpp_compiler: cl.exe
+          # There's some issue with passing Windows flags to CMake, so it finds the default MSVC compiler automatically even better.
+          # - os: windows-latest
+          #  c_compiler: cl.exe
+          #  cpp_compiler: cl.exe
     defaults:
       run:
         working-directory: ${{env.WORKING_DIRECTORY}}
@@ -96,14 +97,13 @@ jobs:
           # DAWN: https://github.com/google/dawn/blob/main/.github/workflows/ci.yml
           sudo apt install libgl-dev libx11-xcb-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libxext-dev wayland-protocols libwayland-dev libxkbcommon-dev
 
-      # MSBuild (Windows)
-      - name: Add MSBuild to PATH (Windows)
-        if: runner.os == 'Windows'
-        uses: microsoft/setup-msbuild@v1.3
-
       # Build
-      - name: Configure CMake
+      - name: Configure CMake (non-Windows)
+        if: runner.os != 'Windows'
         run: cmake -S . -G Ninja -B ${{env.BUILD_DIRECTORY}} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
+      - name: Configure CMake (Windows)
+        if: runner.os == 'Windows'
+        run: cmake -S . -G Ninja -B ${{env.BUILD_DIRECTORY}} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
       - name: Build
         run: cmake --build ${{env.BUILD_DIRECTORY}} --config ${{env.BUILD_TYPE}}
 
