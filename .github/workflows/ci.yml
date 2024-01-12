@@ -63,17 +63,9 @@ jobs:
       - name: Python version
         run: python --version
 
-      # Install Clang 16
-      - name: Install Clang 16 (Linux)
-        if: runner.os == 'Linux'
-        run: |
-          wget https://apt.llvm.org/llvm.sh
-          chmod +x llvm.sh
-          sudo ./llvm.sh 16
-          sudo apt update
-          sudo apt install clang-16
       - name: Clang version
         run: clang --version
+
       - name: Clang++ version
         run: clang++ --version
 
