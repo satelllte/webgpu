@@ -84,7 +84,8 @@ jobs:
         run: cmake --version
       
       # Install Ninja
-      - name: Install Ninja
+      - name: Install Ninja (non-Windows)
+        if: runner.os != 'Windows'
         uses: seanmiddleditch/gha-setup-ninja@master
 
       # Install dependencies
