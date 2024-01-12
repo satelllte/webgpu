@@ -62,10 +62,13 @@ jobs:
       
       - name: Python version
         run: python --version
-      
+
+      # Install Clang 16
+      - name: Install Clang 16 (Linux)
+        if: runner.os == 'Linux'
+        run: sudo apt install clang-16 clang++-16
       - name: Clang version
         run: clang --version
-      
       - name: Clang++ version
         run: clang++ --version
 
