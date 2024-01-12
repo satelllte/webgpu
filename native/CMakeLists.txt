@@ -43,8 +43,8 @@ add_executable(App ./src/main.cpp)
 # Include dependencies
 target_link_libraries(App PRIVATE glfw webgpu_cpp webgpu_dawn webgpu_glfw)
 
-# Use C++ 23
-target_compile_features(App PRIVATE cxx_std_23)
+# Use C++ 20
+target_compile_features(App PRIVATE cxx_std_20)
 
 # Xcode settings
 if(XCODE)
