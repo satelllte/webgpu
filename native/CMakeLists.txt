@@ -33,8 +33,8 @@ CPMAddPackage(
 set(DAWN_FETCH_DEPENDENCIES ON)
 CPMAddPackage(
 	NAME dawn
-	VERSION 6245
-	URL https://dawn.googlesource.com/dawn/+archive/refs/heads/chromium/6245.tar.gz
+	VERSION 6259
+	URL https://dawn.googlesource.com/dawn/+archive/refs/heads/chromium/6259.tar.gz
 )
 
 # Create the executable target
