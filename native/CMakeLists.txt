@@ -15,19 +15,36 @@ project(
 	LANGUAGES CXX C
 )
 
-include(utils.cmake)
+# Include CMake utils
+include(./cmake/CPM.cmake)
+include(./cmake/utils.cmake)
 
-# Include "glfw" third-party directory
-add_subdirectory(./third-party/glfw)
+# Turn on CPM cache
+set(CPM_SOURCE_CACHE "./cpm-cache")
 
-# Create the App executable target with one source file
+# Dependency: "glfw"
+CPMAddPackage(
+	NAME glfw
+	GIT_TAG 3.3.9
+	GIT_REPOSITORY https://github.com/glfw/glfw.git
+)
+
+# Dependency: "dawn"
+set(DAWN_FETCH_DEPENDENCIES ON)
+CPMAddPackage(
+	NAME dawn
+	VERSION 6306
+	URL https://dawn.googlesource.com/dawn/+archive/refs/heads/chromium/6306.tar.gz
+)
+
+# Create the executable target
 add_executable(App ./src/main.cpp)
 
-# Include "glfw" dependency
-target_link_libraries(App PRIVATE glfw)
+# Include dependencies
+target_link_libraries(App PRIVATE glfw webgpu_cpp webgpu_dawn webgpu_glfw)
 
-# Use C++17
-set_target_properties(App PROPERTIES CXX_STANDARD 17)
+# Use C++ 20
+target_compile_features(App PRIVATE cxx_std_20)
 
 # Xcode settings
 if(XCODE)

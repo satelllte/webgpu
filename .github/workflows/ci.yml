@@ -37,19 +37,32 @@ jobs:
       BUILD_DIRECTORY: build
       BUILD_TYPE: Release
       EXECUTABLE_NAME: App
-    timeout-minutes: 5
+    timeout-minutes: 60
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false # Ensure the feedback is delivered for all matrix combinations. Consider changing this to true when the workflow is stable.
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
+        include:
+          - os: ubuntu-latest
+            c_compiler: clang
+            cpp_compiler: clang++
+          - os: macos-latest
+            c_compiler: clang
+            cpp_compiler: clang++
+          # There's some issue with passing Windows flags to CMake, so it finds the default MSVC compiler automatically even better.
+          # - os: windows-latest
+          #  c_compiler: cl.exe
+          #  cpp_compiler: cl.exe
     defaults:
       run:
         working-directory: ${{env.WORKING_DIRECTORY}}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Checkout git submodules
-        run: git submodule update --init --recursive
+      
+      - name: Python version
+        run: python --version
 
       # Install CMake
       - name: Install CMake (Linux)
@@ -63,14 +76,28 @@ jobs:
         run: choco install cmake
       - name: CMake Version
         run: cmake --version
+      
+      # Install Ninja
+      - name: Install Ninja (non-Windows)
+        if: runner.os != 'Windows'
+        uses: seanmiddleditch/gha-setup-ninja@master
 
       # Install dependencies
       - name: Install dependencies (Linux)
         if: runner.os == 'Linux'
-        run: sudo apt-get install -y xorg-dev
+        run: |
+          sudo apt update
+          # GLFW: https://www.glfw.org/docs/3.3/compile.html#compile_deps_x11
+          sudo apt install xorg-dev
+          # DAWN: https://github.com/google/dawn/blob/main/.github/workflows/ci.yml
+          sudo apt install libgl-dev libx11-xcb-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libxext-dev wayland-protocols libwayland-dev libxkbcommon-dev
 
       # Build
-      - name: Configure CMake
+      - name: Configure CMake (non-Windows)
+        if: runner.os != 'Windows'
+        run: cmake -S . -G Ninja -B ${{env.BUILD_DIRECTORY}} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
+      - name: Configure CMake (Windows)
+        if: runner.os == 'Windows'
         run: cmake -S . -B ${{env.BUILD_DIRECTORY}} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
       - name: Build
         run: cmake --build ${{env.BUILD_DIRECTORY}} --config ${{env.BUILD_TYPE}}
